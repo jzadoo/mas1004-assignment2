@@ -16,13 +16,13 @@
 \usepackage[ko]{mas1004}
 
 \reporttitle{Assignment 2: Long report}
-\studentname{\fillin{이름}}
-\studentid{\fillin{학번}}
+\studentname{김서인}
+\studentid{20251121}
 
 \begin{document}
 \makeheader
 
-리더보드 닉네임: \fillin{닉네임}.
+리더보드 닉네임: West Coast Love.
 마지막 릴리스: Track A \texttt{track-a-2} (``no horizontal flip'', 레시피 \texttt{no\_flip}),
 Track B \texttt{track-b-1} (``MobileNetV3-L 320, balanced cities'', 모델 \texttt{b1}).
 
@@ -69,7 +69,7 @@ seed 0의 confusion matrix(\texttt{results/baseline\_seed0/result.json})를 보�
 \paragraph{최종 레시피.} \texttt{no\_flip}을 냈다(selection.csv 없음, 모든 학습 사진 사용).
 검증 점수는 baseline과 같은 수준이지만, baseline은 starter recipe 그 자체라 이길 수 없고,
 리더보드와 최종 채점 사진(길거리 영상, 휴대폰 사진)에는 간판 글자와 차선 방향이 실제로 담겨 있다.
-리더보드 점수: \fillin{다음 날 아침 리더보드에 나오는 track-a-2 점수. starter recipe(track-a-1)의 점수도 같이}.
+리더보드 점수: \texttt{track-a-2}는 제출 시점에 아직 채점되지 않았다. 리더보드(2026-11-10 19:36 KST 갱신)에 있는 내 이전 릴리스 \texttt{track-a-1}(starter recipe)은 리더보드 0.402(seed 0, 1, 2의 평균, 0.392--0.411), 검증 0.497이다.
 
 % ---------------------------------------------------------------------------
 \section*{Decisions you made from photos}
@@ -87,8 +87,7 @@ baseline (seed 0) 모델이 가장 확신하면서 틀린 검증 사진들(\text
 
 이 관찰로 규칙을 정해 학습 사진을 바꾸고 측정하는 단계까지는 가지 못했다.
 첫날 Colab 세션이 사진 링크 입력을 기다리다 끊기고, 다음 날은 무료 GPU 사용량이 바닥나서
-남은 GPU 시간을 \texttt{no\_flip}과 Track B에 썼기 때문이다. \fillin{한 주가 더 있다면 이 관찰로
-무엇을 해 보고 싶은지, 본인 말로}
+남은 GPU 시간을 \texttt{no\_flip}과 Track B에 썼기 때문이다. 한 주가 더 있다면, 고속도로 사진은 학습 사진에서 모두 빼고, 무엇보다 색감부터 신경 쓰겠다. 나라마다 갖는 색감이 독특하다고 생각하기 때문이다. 전통 건물도 함께 살펴보겠다.
 
 에이전트에게 한 요청:
 \begin{itemize}
@@ -130,7 +129,7 @@ b1 & MobileNetV3-Large (IMAGENET1K\_V2), 320 $\times$ 320, 6 epochs, 도시별�
 
 추가 사진은 모으지 않았다.
 
-검증 점수와 리더보드 점수: \fillin{track-b-1의 리더보드 점수, 그리고 두 점수가 다를 수 있는 이유에 대한 본인 생각}.
+검증 점수와 리더보드 점수: \texttt{track-b-1}은 검증 0.554, 리더보드 0.430(2026-11-10 19:36 KST 갱신)이다. 리더보드 점수가 더 낮은 이유는, 모델이 학습 사진에만 있는 특징을 외웠기 때문이라고 생각한다. 검증 사진은 학습 사진과 출처가 같지만, 리더보드 사진은 학습 사진에 없는 다른 유튜브 채널의 영상에서 나온다.
 
 \subsection*{Your submission, as the grader sees it}
 \outputfile{outputs/check_submission.txt}
@@ -142,7 +141,7 @@ b1 & MobileNetV3-Large (IMAGENET1K\_V2), 320 $\times$ 320, 6 epochs, 도시별�
 다만 여러 가지를 함께 바꾼 결과다. Track A의 \texttt{no\_flip}은 0.4933으로, seed만 바꿨을 때의
 차이(0.0057) 안에 있어서 효과가 있었다고 할 수 없다.
 
-\fillin{한 주가 더 있다면 무엇을 해 보고 싶은지, 본인 말로}
+한 주가 더 있다면, 고속도로 사진은 학습 사진에서 모두 빼고, 무엇보다 색감부터 신경 쓰겠다. 나라마다 갖는 색감이 독특하다고 생각하기 때문이다. 전통 건물도 함께 살펴보겠다.
 
 % ---------------------------------------------------------------------------
 \section*{All runs}
