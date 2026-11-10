@@ -1,0 +1,5 @@
+finished,track,tag,seed,official_budget,budget,val_score,seoul,busan,tokyo,osaka,taipei,train_seconds,device,selection,recipe_sha,selection_sha,commit
+2026-11-10T13:11:30,A,baseline,0,True,249984,0.4981,0.5581,0.3748,0.6411,0.3581,0.5582,2188.8,cuda,all training photos,17ac485223fa,,6329a0e
+2026-11-10T13:48:21,A,baseline,1,True,249984,0.4924,0.5671,0.3849,0.6187,0.3745,0.5167,2107.0,cuda,all training photos,17ac485223fa,,6329a0e
+2026-11-10T15:59:32,A,no_flip,0,True,249984,0.4933,0.5864,0.3719,0.6243,0.3421,0.5417,2294.7,cuda,all training photos,d555940f08fe,,b3dd5b4
+2026-11-10T17:00:43,B,b1,,,265344,0.554,0.5688,0.4928,0.6045,0.4911,0.613,3539.6,cuda,mobilenet_v3_large 320px; data/starter/train,,,b3dd5b4

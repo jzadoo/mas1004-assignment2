@@ -13,61 +13,124 @@
 % New Project, Upload Project. Set Menu, Compiler to XeLaTeX, and Recompile.
 
 \documentclass[11pt]{article}
-\usepackage{mas1004}
+\usepackage[ko]{mas1004}
 
 \reporttitle{Assignment 2: Long report}
-\studentname{Your name}
-\studentid{Your student ID}
+\studentname{\fillin{이름}}
+\studentid{\fillin{학번}}
 
 \begin{document}
 \makeheader
 
-\fillin{Your leaderboard nickname, and the tags of your last Track A and Track B releases.}
+리더보드 닉네임: \fillin{닉네임}.
+마지막 릴리스: Track A \texttt{track-a-2} (``no horizontal flip'', 레시피 \texttt{no\_flip}),
+Track B \texttt{track-b-1} (``MobileNetV3-L 320, balanced cities'', 모델 \texttt{b1}).
 
-% The sections below are a suggestion. Change, merge or add sections as you
-% like; README.md, "The long report", says what a reader should be able to see.
+학습은 모두 Google Colab의 T4 GPU에서 했다. 내 노트북(Apple M5)은 Mac GPU(mps)에서
+학습이 오류로 멈췄고(원래 레시피로도 같은 오류), CPU로는 Track A 한 번에 약 193분이
+걸려서 쓰지 않았다. 무료 Colab의 GPU 사용량이 하루 만에 끝나서, 뒤쪽 실행
+(\texttt{no\_flip}, \texttt{b1})은 다른 Google 계정의 Colab에서 돌렸다. 같은 저장소의 같은 커밋을
+가져다 쓰므로 실행 조건은 같다.
 
 % ---------------------------------------------------------------------------
 \section*{Track A}
 
 \begin{center}\footnotesize
-\begin{tabular}{lp{0.6\linewidth}r}
+\begin{tabular}{lp{0.5\linewidth}r}
 \toprule
 tag & what changed from the run before & validation \\
 \midrule
-\multicolumn{3}{l}{\fillin{one row per recipe, with the numbers from experiments.csv}} \\
+baseline (seed 0) & starter recipe 그대로 & 0.4981 \\
+baseline (seed 1) & seed만 바꿈 & 0.4924 \\
+no\_flip (seed 0) & \texttt{train\_transform}에서 \texttt{T.RandomHorizontalFlip()} 삭제 & 0.4933 \\
 \bottomrule
 \end{tabular}
 \end{center}
 
-\fillin{What you tried, why, and what you think each result means.}
+\paragraph{baseline.} starter recipe를 seed 0과 1로 두 번 학습했다. 바뀐 것은 seed뿐인데
+점수가 0.4981과 0.4924로 0.0057 차이가 났다. 그래서 이보다 작은 차이는 운일 수 있다고 보고
+다음 실행들을 비교했다.
 
-\fillin{Your final recipe and selection, and their leaderboard score next to
-their validation score.}
+도시별로 보면 두 seed 모두 부산(0.375, 0.385)과 오사카(0.358, 0.375)가 가장 낮았다.
+seed 0의 confusion matrix(\texttt{results/baseline\_seed0/result.json})를 보면 부산 검증 사진
+1,390장 중 521장을 맞혔고 444장을 서울로 틀렸다. 오사카는 2,128장 중 762장을 맞혔고
+844장을 도쿄로 틀려서, 맞힌 것보다 도쿄로 틀린 것이 더 많았다. 학습 사진 수도
+부산 5,191장, 오사카 7,200장으로 서울(11,274장)과 도쿄(13,347장)보다 훨씬 적다.
+
+\paragraph{no\_flip.} 이유: ``글자가 중요한 단서일 것 같은데, 한글, 일본어, 한자는 뒤집으면 다른
+글자가 되니까 구별이 잘 안 될 것 같아.'' 뒤집기를 빼면 차가 다니는 방향(도쿄·오사카는 좌측통행)도
+그대로 남는다.
+
+결과는 0.4933으로 baseline 두 번(0.4924, 0.4981) 사이에 있어서, 좋아졌다고도 나빠졌다고도
+할 수 없다. 서울은 0.586으로 조금 올랐고 오사카는 0.342로 조금 내렸다.
+내 해석: ``모델이 글자보다 건물 모양, 색감, 도로 같은 다른 단서를 더 많이 쓰고 있을 수 있다.
+그리고 같은 나라 끼리라서 헷갈리는 듯.''
+
+\paragraph{최종 레시피.} \texttt{no\_flip}을 냈다(selection.csv 없음, 모든 학습 사진 사용).
+검증 점수는 baseline과 같은 수준이지만, baseline은 starter recipe 그 자체라 이길 수 없고,
+리더보드와 최종 채점 사진(길거리 영상, 휴대폰 사진)에는 간판 글자와 차선 방향이 실제로 담겨 있다.
+리더보드 점수: \fillin{다음 날 아침 리더보드에 나오는 track-a-2 점수. starter recipe(track-a-1)의 점수도 같이}.
 
 % ---------------------------------------------------------------------------
 \section*{Decisions you made from photos}
 
 \picturefile{figures/mistakes_baseline_seed0_busan_00.png}
+\picturefile{figures/mistakes_baseline_seed0_osaka_00.png}
 
-\fillin{What you looked at, what you saw in common, and the rule you wrote
-before acting.}
+baseline (seed 0) 모델이 가장 확신하면서 틀린 검증 사진들(\texttt{curate.py mistakes})을
+도시별로 한 장씩 보았다. 위는 부산과 오사카 사진이다. 사진 아래의 \texttt{-> seoul 0.99}는
+``서울이라고 99\% 확신했는데 틀렸다''는 뜻이다.
 
-\fillin{What you changed (the output of curate.py count, or the photos you
-added), and the scores before and after.}
+내가 본 공통점: 글자가 안 보이는 사진, 전통 건물, 고속도로를 잘 구별하지 못하는 듯하다.
+이것은 \texttt{no\_flip}의 결과와도 이어진다. 글자가 없는 사진이 많다면, 글자를 지키려고 뒤집기를
+뺀 것이 큰 차이를 만들지 못한 것도 설명이 된다.
 
-\fillin{The requests you gave your agent for these decisions.}
+이 관찰로 규칙을 정해 학습 사진을 바꾸고 측정하는 단계까지는 가지 못했다.
+첫날 Colab 세션이 사진 링크 입력을 기다리다 끊기고, 다음 날은 무료 GPU 사용량이 바닥나서
+남은 GPU 시간을 \texttt{no\_flip}과 Track B에 썼기 때문이다. \fillin{한 주가 더 있다면 이 관찰로
+무엇을 해 보고 싶은지, 본인 말로}
+
+에이전트에게 한 요청:
+\begin{itemize}
+\item 에이전트가 Colab에서 만든 baseline의 틀린 사진 시트(\texttt{curate.py mistakes})를 직접 보았다.
+\item ``뒤집어보자. 왜냐면 내가 생각했을땐 글자가 중요한 단서일 것 같은데, 한글, 일본어,
+  한자는 뒤집으면 다른 글자가 되니까 구별이 잘 안 될 것 같아.'' $\rightarrow$ 레시피에서
+  \texttt{RandomHorizontalFlip} 삭제(\texttt{no\_flip}).
+\item Track B는 에이전트가 제안한 설정(MobileNetV3-Large, 320, 6 epochs, 도시별로 고르게 뽑기)에
+  동의해서 돌렸다.
+\item Track A 최종 레시피는 에이전트에게 추천을 받아 \texttt{no\_flip}으로 정했다.
+\end{itemize}
 
 % ---------------------------------------------------------------------------
 \section*{Track B}
 
-\fillin{What you tried, one step at a time, and the validation score after
-each step.}
+\begin{center}\footnotesize
+\begin{tabular}{lp{0.5\linewidth}r}
+\toprule
+tag & what & validation \\
+\midrule
+b1 & MobileNetV3-Large (IMAGENET1K\_V2), 320 $\times$ 320, 6 epochs, 도시별로 고르게 뽑기(\texttt{--balance}), starter 학습 사진만 & 0.554 \\
+\bottomrule
+\end{tabular}
+\end{center}
 
-\fillin{How you collected any extra photos.}
+\texttt{src/train\_b.py}로 한 번 학습했다. 4.20 million parameters, 0.44 billion multiply-adds로
+한도(12 million, 2.0 billion) 안에 든다. 학습에 약 59분(3,540초) 걸렸다.
 
-\fillin{Your validation score next to your leaderboard score, and why they
-might disagree.}
+이유: ``도시별로 고르게 뽑자고 한 이유는, 한 도시만 많으면 그 도시에 편향될 줄 알았다.''
+
+검증 점수는 0.554로 Track A baseline(0.4981)보다 높다. 도시별로는 부산 0.375 $\rightarrow$ 0.493,
+오사카 0.358 $\rightarrow$ 0.491로 사진이 적은 도시가 많이 올랐고, 사진이 가장 많은 도쿄는
+0.641 $\rightarrow$ 0.604로 내려갔다(Track A baseline seed 0과 비교).
+내 해석: ``지금 생각해보면 그 도시에 대한 정확성은 좀 오르지 않았을까... 그리고 그래도 글자의
+영향이 있었기 때문에 높게 나온 듯.''
+
+다만 \texttt{b1}은 모델, 이미지 크기, 도시별 균형, 학습량을 한꺼번에 바꿨기 때문에, 이 중 무엇이
+점수를 올렸는지는 이 실행만으로는 나눠 말할 수 없다.
+
+추가 사진은 모으지 않았다.
+
+검증 점수와 리더보드 점수: \fillin{track-b-1의 리더보드 점수, 그리고 두 점수가 다를 수 있는 이유에 대한 본인 생각}.
 
 \subsection*{Your submission, as the grader sees it}
 \outputfile{outputs/check_submission.txt}
@@ -75,10 +138,11 @@ might disagree.}
 % ---------------------------------------------------------------------------
 \section*{What made the difference}
 
-\fillin{Which change helped most and which least, in both tracks, with your
-numbers.}
+가장 큰 차이는 Track B의 \texttt{b1}이었다: 0.554로 Track A baseline보다 약 0.056 높다.
+다만 여러 가지를 함께 바꾼 결과다. Track A의 \texttt{no\_flip}은 0.4933으로, seed만 바꿨을 때의
+차이(0.0057) 안에 있어서 효과가 있었다고 할 수 없다.
 
-\fillin{What you would do next with one more week.}
+\fillin{한 주가 더 있다면 무엇을 해 보고 싶은지, 본인 말로}
 
 % ---------------------------------------------------------------------------
 \section*{All runs}
