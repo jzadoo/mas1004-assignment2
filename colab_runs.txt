@@ -1,2 +1,4 @@
 python src/curate.py mistakes results/baseline_seed0/model.onnx
 python src/official.py --tag no_flip
+python src/train_b.py --tag b1 --model mobilenet_v3_large --size 320 --epochs 6 --balance --submit
+python src/check_submission.py --no-val
