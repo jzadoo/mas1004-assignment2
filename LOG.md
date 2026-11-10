@@ -30,6 +30,6 @@ End the log with your plan for what to try next.
 
 ## 2026-11-10 b1 (Track B)
 - changed: mobilenet_v3_large (IMAGENET1K_V2) at 320, 6 epochs, every city drawn equally often (--balance), starter training photos
-- why: 
+- why: 도시별로 고르게 뽑자고 한 이유는, 한 도시만 많으면 그 도시에 편향될 줄 알았다.
 - validation: 0.554 (Track A baseline: 0.4981)
-- what it means: 
+- what it means: 지금 생각해보면 그 도시에 대한 정확성은 좀 오르지 않았을까... 그리고 그래도 글자의 영향이 있었기 때문에 높게 나온 듯
